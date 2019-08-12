@@ -10,7 +10,7 @@ public class Pedido {
 
 
     public Pedido(){
-        pizzas = FXCollections.emptyObservableList();
+        pizzas = FXCollections.observableArrayList();
     }
 
     public void incluir(Pizza p){

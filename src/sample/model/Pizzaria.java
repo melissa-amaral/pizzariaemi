@@ -11,7 +11,7 @@ public class Pizzaria {
     private static Pizzaria instance=new Pizzaria();
 
     private Pizzaria(){
-        sabores = FXCollections.emptyObservableList();
+        sabores = FXCollections.observableArrayList();
     }
 
     public static Pizzaria getInstance(){
@@ -34,8 +34,10 @@ public class Pizzaria {
     public void incluirPizza(Pizza p) throws Exception{
         if(pedido != null){
             pedido.incluir(p);
+        }else{
+            throw new Exception("Pedido fechado!!");
         }
-        throw new Exception("Pedido fechado!!");
+
     }
 
     public Double fecharPedido() throws Exception{
@@ -44,9 +46,11 @@ public class Pizzaria {
             valor = pedido.getValorTotal();
             pedido = null;
             return valor;
+        }else {
+            throw  new Exception("Pedido fechado!!");
         }
 
-        throw  new Exception("Pedido fechado!!");
+
 
     }
 
@@ -65,8 +69,10 @@ public class Pizzaria {
     public ObservableList getListaPedido(){
         if(pedido != null){
             return pedido.listaPizzas();
+        }else{
+            return FXCollections.emptyObservableList();
         }
-        return FXCollections.emptyObservableList();
+
 
     }
 
