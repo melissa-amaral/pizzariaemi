@@ -33,16 +33,16 @@
             <VBox spacing="5">
                 <Label text="Sabores"/>
                 <ListView fx:id="ltvSabores"/>
-                <Button text="Incluir" fx:id="btIncluir"/>
+                <Button text="Incluir" fx:id="btIncluir" onAction="#incluirPizza"/>
             </VBox>
 
             <VBox spacing="5">
-                <Button text="Abrir" fx:id="btAbrirPedido"/>
+                <Button text="Abrir" fx:id="btAbrirPedido" onAction="#abrirPedido"/>
                 <Label text="Pedido"/>
                 <ListView fx:id="ltvPedido"/>
                 <HBox spacing="20">
-                    <Button text="Fechar" fx:id="btFecharPedido"/>
-                    <Text text="Valor Total R$:"/>
+                    <Button text="Fechar" fx:id="btFecharPedido" onAction="#fecharPedido"/>
+                    <Text text="Valor Total R$:" fx:id="txtValor"/>
                 </HBox>
 
 

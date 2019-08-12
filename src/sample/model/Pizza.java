@@ -1,6 +1,8 @@
 package sample.model;
 
-public class Pizza {
+import java.io.Serializable;
+
+public class Pizza implements Serializable {
 
     private String sabor;
     private Double valor;

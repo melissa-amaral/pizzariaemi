@@ -3,7 +3,12 @@ package sample.model;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.io.*;
+import java.util.ArrayList;
+
 public class Pizzaria {
+
+    private String ARQ = "pizzas.bin";
 
     private ObservableList<Pizza> sabores;
     private Pedido pedido;
@@ -27,8 +32,10 @@ public class Pizzaria {
     public void abrirPedido() throws Exception{
         if(pedido == null){
             pedido = new Pedido();
+        }else{
+            throw new Exception("Pedido já aberto!!");
         }
-        throw new Exception("Pedido já aberto!!");
+
     }
 
     public void incluirPizza(Pizza p) throws Exception{
@@ -72,7 +79,35 @@ public class Pizzaria {
         }else{
             return FXCollections.emptyObservableList();
         }
+    }
 
+    public void salva() throws IOException {
+
+        File f = new File(ARQ);
+        FileOutputStream fos = new FileOutputStream(f);
+        ObjectOutputStream oos = new ObjectOutputStream(fos);
+
+        oos.writeObject(new ArrayList<>(sabores));
+
+        oos.close();
+        fos.close();
+
+    }
+
+    public void carrega() throws IOException,ClassNotFoundException{
+
+        File f = new File(ARQ);
+        FileInputStream fis = new FileInputStream(f);
+        ObjectInputStream ois = new ObjectInputStream(fis);
+
+
+        ArrayList pizzas = (ArrayList) ois.readObject();
+
+        sabores.addAll(pizzas);
+
+
+        ois.close();
+        fis.close();
 
     }
 
