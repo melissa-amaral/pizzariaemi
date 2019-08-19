@@ -6,15 +6,14 @@ import java.util.List;
 
 public class PizzaDAOImpl implements PizzaDAO{
 
-
     @Override
     public Pizza insere(String sabor, double valor) throws SQLException {
+
         Pizza p = new Pizza(sabor,valor);
+
         Connection con = DriverManager.getConnection("jdbc:sqlite:pizzappemi.sqlite");
 
-
-        PreparedStatement stm = con
-                    .prepareStatement("INSERT INTO Pizzas(sabor,valor) VALUES (?,?)");
+        PreparedStatement stm = con.prepareStatement("INSERT INTO Pizzas(sabor,valor) VALUES (?,?)");
 
         stm.setString(1,p.getSabor());
         stm.setDouble(2,p.getValor());

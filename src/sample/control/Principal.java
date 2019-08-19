@@ -102,17 +102,19 @@ public class Principal {
     public void buscaPizzas(KeyEvent evt){
         try{
 
-
             if(evt.getCode() == KeyCode.Z && evt.isControlDown()){
                 Pizzaria.getInstance().listaSabores();
                 ((TextField)evt.getSource()).setText("");
+
             }else{
                 String texto = ((TextField)evt.getSource()).getText() + evt.getText();
 
                 if(texto.length() >= 3){
                     Pizzaria.getInstance().buscaPizza(texto);
                 }
+
             }
+            
         }catch (SQLException e){
             mensagem(Alert.AlertType.ERROR,"Erro ao listar Pizzas!"+e.getMessage());
         }
@@ -120,21 +122,26 @@ public class Principal {
 
     @FXML
     public void buscaClientes(KeyEvent evt){
-        String texto = ((TextField)evt.getSource()).getText();
-        if(evt.getCode() != KeyCode.BACK_SPACE){
-            texto += evt.getText();
-        }
+        try{
 
-        System.out.println(texto+" "+texto.length());
-        if(evt.getCode() == KeyCode.Z && evt.isControlDown() || texto.length()==0){
-            Pizzaria.getInstance().listaClientes();
-            ((TextField)evt.getSource()).setText("");
-        }else{
+            String texto = ((TextField)evt.getSource()).getText();
 
-
-            if(texto.length() >= 3){
-                Pizzaria.getInstance().buscaCliente(texto);
+            if(evt.getCode() != KeyCode.BACK_SPACE){
+                texto += evt.getText();
             }
+
+            System.out.println(texto+" "+texto.length());
+
+            if(evt.getCode() == KeyCode.Z && evt.isControlDown() || texto.length()==0){
+                Pizzaria.getInstance().listaClientes();
+                ((TextField)evt.getSource()).setText("");
+            }else{
+                if(texto.length() >= 3){
+                    Pizzaria.getInstance().buscaCliente(texto);
+                }
+            }
+        }catch (SQLException e){
+            mensagem(Alert.AlertType.ERROR,"Erro ao listar Clientes!"+e.getMessage());
         }
     }
 
