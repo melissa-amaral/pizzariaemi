@@ -4,6 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.io.*;
+import java.sql.*;
 import java.util.ArrayList;
 
 public class Pizzaria {
@@ -11,12 +12,15 @@ public class Pizzaria {
     private String ARQ = "pizzas.bin";
 
     private ObservableList<Pizza> sabores;
+    private ObservableList<Cliente> clientes;
+
     private Pedido pedido;
 
     private static Pizzaria instance=new Pizzaria();
 
     private Pizzaria(){
         sabores = FXCollections.observableArrayList();
+        clientes = FXCollections.observableArrayList();
     }
 
     public static Pizzaria getInstance(){
@@ -24,9 +28,54 @@ public class Pizzaria {
     }
 
     public void cadastraPizza(String sabor, Double valor){
-        Pizza p = new Pizza(sabor,valor);
 
-        sabores.add(p);
+        Pizza p = new Pizza(sabor,valor);
+        try{
+
+            Connection con = DriverManager.getConnection("jdbc:sqlite:pizzappemi.sqlite");
+
+
+            PreparedStatement stm = con
+                    .prepareStatement("INSERT INTO Pizzas(sabor,valor) VALUES (?,?)");
+
+            stm.setString(1,p.getSabor());
+            stm.setDouble(2,p.getValor());
+
+            stm.executeUpdate();
+
+            stm.close();
+            con.close();
+
+
+            sabores.add(p);
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+
+    }
+
+    public void cadastraCliente(String nome, String telefone, int anoNascimento){
+        try{
+            Connection con = DriverManager.getConnection("jdbc:sqlite:pizzappemi.sqlite");
+
+            PreparedStatement stm = con.prepareStatement("INSERT INTO CLIENTES(NOME,TELEFONE,ANONASCIMENTO) VALUES (?,?,?)");
+
+            stm.setString(1,nome);
+            stm.setString(2,telefone);
+            stm.setInt(3,anoNascimento);
+
+            stm.executeUpdate();
+
+            stm.close();
+            con.close();
+
+
+            clientes.add(new Cliente(nome,telefone,anoNascimento));
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
     }
 
     public void abrirPedido() throws Exception{
@@ -62,6 +111,36 @@ public class Pizzaria {
     }
 
     public ObservableList listaSabores(){
+
+        sabores.clear();
+        try{
+
+            Connection con = DriverManager.getConnection("jdbc:sqlite:pizzappemi.sqlite");
+            PreparedStatement stm = con.prepareStatement("SELECT * FROM Pizzas");
+
+            ResultSet rs = stm.executeQuery();
+
+
+            while(rs.next()){
+                int id = rs.getInt("id");
+                String sabor = rs.getString("sabor");
+                double valor = rs.getDouble("valor");
+
+                Pizza p = new Pizza(id,sabor,valor);
+
+                sabores.add(p);
+            }
+
+
+            rs.close();
+            stm.close();
+            con.close();
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+
+
         return sabores;
     }
 
@@ -80,6 +159,113 @@ public class Pizzaria {
             return FXCollections.emptyObservableList();
         }
     }
+
+    public ObservableList buscaPizza(String texto){
+        sabores.clear();
+
+        try{
+
+            Connection con = DriverManager.getConnection("jdbc:sqlite:pizzappemi.sqlite");
+
+            PreparedStatement stm = con.prepareStatement("SELECT * FROM PIZZAS where SABOR like ?");
+
+            stm.setString(1,"%"+texto+"%");
+
+            ResultSet res = stm.executeQuery();
+
+            while(res.next()){
+                int id = res.getInt("ID");
+                String sabor = res.getString("SABOR");
+                Double valor = res.getDouble("VALOR");
+
+                Pizza p = new Pizza(id,sabor,valor);
+
+                sabores.add(p);
+            }
+
+            res.close();
+            stm.close();
+            con.close();
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+
+        return sabores;
+    }
+
+    public ObservableList buscaCliente(String texto){
+        clientes.clear();
+
+        try{
+
+            Connection con = DriverManager.getConnection("jdbc:sqlite:pizzappemi.sqlite");
+
+
+            PreparedStatement stm = con.prepareStatement("SELECT * FROM CLIENTES where NOME like ?");
+
+            stm.setString(1,"%"+texto+"%");
+
+            ResultSet res = stm.executeQuery();
+
+            while(res.next()){
+                int id = res.getInt("ID");
+                String nome = res.getString("NOME");
+                String telefone = res.getString("NOME");
+                int anoNascimento = res.getInt("ANONASCIMENTO");
+
+                Cliente c = new Cliente(id,nome,telefone,anoNascimento);
+
+                clientes.add(c);
+            }
+
+            res.close();
+            stm.close();
+            con.close();
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+
+        return clientes;
+    }
+
+
+
+    public ObservableList listaClientes(){
+        clientes.clear();
+
+        try{
+
+            Connection con = DriverManager.getConnection("jdbc:sqlite:pizzappemi.sqlite");
+
+            Statement stm = con.createStatement();
+
+            ResultSet res = stm.executeQuery("SELECT * FROM CLIENTES");
+
+            while(res.next()){
+                int id = res.getInt("ID");
+                String nome = res.getString("NOME");
+                String telefone = res.getString("TELEFONE");
+                int anoNascimento =res.getInt("ANONASCIMENTO");
+
+                Cliente c = new Cliente(id,nome,telefone,anoNascimento);
+
+                clientes.add(c);
+            }
+
+            res.close();
+            stm.close();
+            con.close();
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+
+        return clientes;
+    }
+
+
 
     public void salva() throws IOException {
 

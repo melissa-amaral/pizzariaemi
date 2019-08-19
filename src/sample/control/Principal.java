@@ -5,8 +5,12 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
 import sample.NavegadorCenas;
+import sample.model.Cliente;
 import sample.model.Pedido;
 import sample.model.Pizza;
 import sample.model.Pizzaria;
@@ -21,6 +25,9 @@ public class Principal {
 
     @FXML
     private ListView<Pizza> ltvPedido;
+
+    @FXML
+    private ListView<Cliente> ltvClientes;
 
     @FXML
     private Button btIncluir;
@@ -39,6 +46,7 @@ public class Principal {
 
     public void initialize(){
         ltvSabores.setItems(Pizzaria.getInstance().listaSabores());
+        ltvClientes.setItems(Pizzaria.getInstance().listaClientes());
         btFecharPedido.setDisable(true);
         btIncluir.setDisable(true);
     }
@@ -76,7 +84,7 @@ public class Principal {
 
                 btFecharPedido.setDisable(true);
                 btIncluir.setDisable(true);
-            txtValor.setText("Valor Total R$:");
+                txtValor.setText("Valor Total R$:");
 
 
         }catch (Exception e){
@@ -85,10 +93,47 @@ public class Principal {
     }
 
 
+    @FXML
+    public void buscaPizzas(KeyEvent evt){
+
+        if(evt.getCode() == KeyCode.Z && evt.isControlDown()){
+            Pizzaria.getInstance().listaSabores();
+            ((TextField)evt.getSource()).setText("");
+        }else{
+            String texto = ((TextField)evt.getSource()).getText() + evt.getText();
+
+            if(texto.length() >= 3){
+                Pizzaria.getInstance().buscaPizza(texto);
+            }
+        }
+    }
+
+    @FXML
+    public void buscaClientes(KeyEvent evt){
+
+        if(evt.getCode() == KeyCode.Z && evt.isControlDown()){
+            Pizzaria.getInstance().listaClientes();
+            ((TextField)evt.getSource()).setText("");
+        }else{
+            String texto = ((TextField)evt.getSource()).getText() + evt.getText();
+
+            if(texto.length() >= 3){
+                Pizzaria.getInstance().buscaCliente(texto);
+            }
+        }
+    }
+
+
 
     public void cadastrarPizza(){
 
         NavegadorCenas.loadJanela(NavegadorCenas.JANELA_CADASTRO);
+
+    }
+
+    public void cadastrarCliente(){
+
+        NavegadorCenas.loadJanela(NavegadorCenas.JANELA_CADASTRO_CLIENTE);
 
     }
 

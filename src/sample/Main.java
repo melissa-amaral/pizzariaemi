@@ -45,18 +45,11 @@ public class Main extends Application {
     @Override
     public void init() throws Exception {
         super.init();
-        try{
-            Pizzaria.getInstance().carrega();
-        }catch (IOException e){
-            System.out.println(e.getMessage());
-        }
-
     }
 
     @Override
     public void stop() throws Exception {
         super.stop();
-        Pizzaria.getInstance().salva();
     }
 
     public static void main(String[] args) {

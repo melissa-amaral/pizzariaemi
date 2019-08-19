@@ -11,6 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.text.Text?>
+<?import javafx.scene.control.TextField?>
 <BorderPane fx:controller="sample.control.Principal"
             xmlns:fx="http://javafx.com/fxml" >
 
@@ -19,7 +20,9 @@
             <menus>
                 <Menu text="Arquivo">
                     <items>
-                        <MenuItem text="Cadastrar" onAction="#cadastrarPizza"/>
+                        <MenuItem text="Cadastrar Pizza" onAction="#cadastrarPizza"/>
+                        <MenuItem text="Cadastrar Cliente" onAction="#cadastrarCliente"/>
+
                     </items>
                 </Menu>
             </menus>
@@ -30,8 +33,15 @@
             <padding>
                 <Insets left="5.0" top="5.0" right="5.0" bottom="5.0"/>
             </padding>
+            <VBox>
+                <Label text="Clientes"/>
+                <TextField fx:id="tfBuscaClientes" promptText="Buscar" onKeyPressed="#buscaClientes"/>
+                <ListView fx:id="ltvClientes" />
+            </VBox>
+
             <VBox spacing="5">
                 <Label text="Sabores"/>
+                <TextField fx:id="tfBuscaPizza" promptText="Buscar" onKeyPressed="#buscaPizzas"/>
                 <ListView fx:id="ltvSabores"/>
                 <Button text="Incluir" fx:id="btIncluir" onAction="#incluirPizza"/>
             </VBox>
