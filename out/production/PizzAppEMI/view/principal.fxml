@@ -1,0 +1,68 @@
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.GridPane?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.control.TextField?>
+<BorderPane fx:controller="sample.control.Principal"
+            xmlns:fx="http://javafx.com/fxml" >
+
+    <top>
+        <MenuBar>
+            <menus>
+                <Menu text="Arquivo">
+                    <items>
+                        <MenuItem text="Cadastrar Pizza" onAction="#cadastrarPizza"/>
+                        <MenuItem text="Cadastrar Cliente" onAction="#cadastrarCliente"/>
+
+                    </items>
+                </Menu>
+            </menus>
+        </MenuBar>
+    </top>
+    <center>
+        <HBox spacing="5">
+            <padding>
+                <Insets left="5.0" top="5.0" right="5.0" bottom="5.0"/>
+            </padding>
+            <VBox>
+                <Label text="Clientes"/>
+                <TextField fx:id="tfBuscaClientes" promptText="Buscar" onKeyPressed="#buscaClientes"/>
+                <ListView fx:id="ltvClientes" />
+            </VBox>
+
+            <VBox spacing="5">
+                <Label text="Sabores"/>
+                <TextField fx:id="tfBuscaPizza" promptText="Buscar" onKeyPressed="#buscaPizzas"/>
+                <ListView fx:id="ltvSabores"/>
+                <Button text="Incluir" fx:id="btIncluir" onAction="#incluirPizza"/>
+            </VBox>
+
+            <VBox spacing="5">
+                <Button text="Abrir" fx:id="btAbrirPedido" onAction="#abrirPedido"/>
+                <Label text="Pedido"/>
+                <ListView fx:id="ltvPedido"/>
+                <HBox spacing="20">
+                    <Button text="Fechar" fx:id="btFecharPedido" onAction="#fecharPedido"/>
+                    <Text text="Valor Total R$:" fx:id="txtValor"/>
+                </HBox>
+
+
+            </VBox>
+
+        </HBox>
+
+
+    </center>
+
+
+
+</BorderPane>

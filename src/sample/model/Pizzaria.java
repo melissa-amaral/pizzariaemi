@@ -11,6 +11,9 @@ public class Pizzaria {
 
     private String ARQ = "pizzas.bin";
 
+    PizzaDAO pizzaDAO = new PizzaDAOImpl();
+
+
     private ObservableList<Pizza> sabores;
     private ObservableList<Cliente> clientes;
 
@@ -27,31 +30,9 @@ public class Pizzaria {
         return instance;
     }
 
-    public void cadastraPizza(String sabor, Double valor){
+    public void cadastraPizza(String sabor, Double valor) throws SQLException{
 
-        Pizza p = new Pizza(sabor,valor);
-        try{
-
-            Connection con = DriverManager.getConnection("jdbc:sqlite:pizzappemi.sqlite");
-
-
-            PreparedStatement stm = con
-                    .prepareStatement("INSERT INTO Pizzas(sabor,valor) VALUES (?,?)");
-
-            stm.setString(1,p.getSabor());
-            stm.setDouble(2,p.getValor());
-
-            stm.executeUpdate();
-
-            stm.close();
-            con.close();
-
-
-            sabores.add(p);
-
-        }catch (SQLException e){
-            e.printStackTrace();
-        }
+        pizzaDAO.insere(sabor,valor);
 
     }
 
@@ -110,36 +91,11 @@ public class Pizzaria {
 
     }
 
-    public ObservableList listaSabores(){
+    public ObservableList listaSabores() throws SQLException{
 
         sabores.clear();
-        try{
 
-            Connection con = DriverManager.getConnection("jdbc:sqlite:pizzappemi.sqlite");
-            PreparedStatement stm = con.prepareStatement("SELECT * FROM Pizzas");
-
-            ResultSet rs = stm.executeQuery();
-
-
-            while(rs.next()){
-                int id = rs.getInt("id");
-                String sabor = rs.getString("sabor");
-                double valor = rs.getDouble("valor");
-
-                Pizza p = new Pizza(id,sabor,valor);
-
-                sabores.add(p);
-            }
-
-
-            rs.close();
-            stm.close();
-            con.close();
-
-        }catch (SQLException e){
-            e.printStackTrace();
-        }
-
+        sabores.addAll(pizzaDAO.lista());
 
         return sabores;
     }

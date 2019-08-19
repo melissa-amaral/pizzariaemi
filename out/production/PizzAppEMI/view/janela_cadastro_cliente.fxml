@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<GridPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="sample.control.JanelaCadastroCliente"
+            prefHeight="400.0" prefWidth="600.0">
+
+    <Label GridPane.columnIndex="0" GridPane.rowIndex="0" text="Nome" labelFor="$tfNome"/>
+    <TextField GridPane.columnIndex="1" GridPane.rowIndex="0" fx:id="tfNome"/>
+    <Label GridPane.columnIndex="0" GridPane.rowIndex="1" text="Telefone" labelFor="$tfTelefone"/>
+    <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" fx:id="tfTelefone"/>
+    <Label GridPane.columnIndex="0" GridPane.rowIndex="2" text="Ano Nascimento" labelFor="$tfAnoNascimento"/>
+    <TextField GridPane.columnIndex="1" GridPane.rowIndex="2" fx:id="tfAnoNascimento"/>
+
+    <HBox GridPane.columnIndex="1" GridPane.rowIndex="3" spacing="10">
+        <Button text="Voltar" onAction="#voltar"/>
+        <Button text="Cadastrar" onAction="#cadastrar"/>
+    </HBox>
+
+</GridPane>
